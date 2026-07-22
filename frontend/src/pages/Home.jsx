@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
-import ProductCard from "../components/ProductCard";
+import CategorySection from "../components/CategorySection";
 
 import { getProducts } from "../services/product.service";
+
+import { getCategories } from "../services/category.service";
 
 import Hero from "../components/Hero";
 
@@ -11,6 +13,8 @@ import Features from "../components/Features";
 import { useSearchParams } from "react-router-dom";
 
 const Home = () => {
+  const [categories, setCategories] = useState([]);
+  
   const [products, setProducts] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -25,9 +29,12 @@ const Home = () => {
 
   const fetchProducts = async () => {
     try {
-      const data = await getProducts(keyword);
+      const categoryData = await getCategories();
+      setCategories(categoryData.categories);
 
-      setProducts(data.products);
+      const productData = await getProducts(keyword);
+      setProducts(productData.products);
+
     } catch (error) {
       console.error(error);
     } finally {
@@ -37,54 +44,55 @@ const Home = () => {
 
   if (loading) {
     return (
-      <h1 className="text-center text-2xl mt-20">
+      <h1 className="mt-20 text-2xl text-center">
         Loading Products...
       </h1>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4">
+    <div className="px-4 py-10 mx-auto max-w-7xl">
         <>
             <Hero />
 
             <Features />
 
-            <div className="max-w-7xl mx-auto px-5">
+            <div className="px-5 mx-auto max-w-7xl">
 
                 ...
 
             </div>
 
         </>
-      <div className="flex justify-between items-center mb-8">
-        <div>
-            <h2 className="text-5xl font-bold">
-                Latest Products
-            </h2>
+      <div className="space-y-20">
 
-            <p className="text-gray-500 mt-3">
-                Discover trending products with amazing deals.
-            </p>
-        </div>
+        {categories.map((category) => {
 
-        <button className="bg-blue-700 text-white px-6 py-3 rounded-xl hover:bg-blue-800 transition">
-            View All
-        </button>
-    </div>
+          const categoryProducts = products.filter(
 
-      {products.length === 0 ? (
-        <h2>No Products Found</h2>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {products.map((product) => (
-            <ProductCard
-              key={product._id}
-              product={product}
+            (product) =>
+
+              product.category?._id === category._id
+
+          );
+
+          return (
+
+            <CategorySection
+
+              key={category._id}
+
+              category={category}
+
+              products={categoryProducts.slice(0, 4)}
+
             />
-          ))}
-        </div>
-      )}
+
+          );
+
+        })}
+
+      </div>
     </div>
   );
 };
