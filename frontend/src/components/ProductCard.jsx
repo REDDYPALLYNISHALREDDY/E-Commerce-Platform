@@ -6,16 +6,18 @@ const ProductCard = ({ product }) => {
 
   const { addToCart } = useCart();
 
+  const BACKEND_URL = import.meta.env.VITE_API_URL.replace("/api/v1", "");
+
   const image =
     product.images?.length
-      ? `http://localhost:5000${product.images[0]}`
+      ? `${BACKEND_URL}${product.images[0]}`
       : "https://via.placeholder.com/300";
 
   const originalPrice = Math.round(product.price * 1.2);
 
   return (
 
-    <div className="bg-white rounded-3xl shadow-md hover:shadow-2xl hover:-translate-y-2 duration-300 overflow-hidden group">
+    <div className="overflow-hidden duration-300 bg-white shadow-md rounded-3xl hover:shadow-2xl hover:-translate-y-2 group">
 
       <div className="relative">
 
@@ -24,16 +26,16 @@ const ProductCard = ({ product }) => {
           <img
             src={image}
             alt={product.name}
-            className="h-64 w-full object-cover group-hover:scale-110 duration-500"
+            className="object-cover w-full h-64 duration-500 group-hover:scale-110"
           />
 
         </Link>
 
-        <span className="absolute top-4 left-4 bg-green-600 text-white text-xs px-3 py-1 rounded-full">
+        <span className="absolute px-3 py-1 text-xs text-white bg-green-600 rounded-full top-4 left-4">
           NEW
         </span>
 
-        <button className="absolute top-4 right-4 bg-white p-3 rounded-full shadow hover:bg-red-50">
+        <button className="absolute p-3 bg-white rounded-full shadow top-4 right-4 hover:bg-red-50">
 
           <FaHeart className="text-red-500" />
 
@@ -51,7 +53,7 @@ const ProductCard = ({ product }) => {
           <FaStar />
           <FaStar />
 
-          <span className="text-gray-500 text-sm ml-2">
+          <span className="ml-2 text-sm text-gray-500">
 
             (128)
 
@@ -59,7 +61,7 @@ const ProductCard = ({ product }) => {
 
         </div>
 
-        <h2 className="text-2xl font-bold mt-3">
+        <h2 className="mt-3 text-2xl font-bold">
 
           {product.name}
 
@@ -79,7 +81,7 @@ const ProductCard = ({ product }) => {
 
           </span>
 
-          <span className="line-through text-gray-400">
+          <span className="text-gray-400 line-through">
 
             ₹{originalPrice}
 
@@ -92,7 +94,7 @@ const ProductCard = ({ product }) => {
             e.preventDefault(); 
             addToCart(product,1);
           }}
-          className="w-full mt-6 bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-xl flex items-center justify-center gap-2"
+          className="flex items-center justify-center w-full gap-2 py-3 mt-6 text-white bg-blue-700 hover:bg-blue-800 rounded-xl"
         >
 
           <FaShoppingCart />
