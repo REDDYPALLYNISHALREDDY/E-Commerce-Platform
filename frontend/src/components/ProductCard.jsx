@@ -6,11 +6,9 @@ const ProductCard = ({ product }) => {
 
   const { addToCart } = useCart();
 
-  const BACKEND_URL = import.meta.env.VITE_API_URL.replace("/api/v1", "");
-
   const image =
     product.images?.length
-      ? `${BACKEND_URL}${product.images[0]}`
+      ? product.images[0]
       : "https://via.placeholder.com/300";
 
   const originalPrice = Math.round(product.price * 1.2);

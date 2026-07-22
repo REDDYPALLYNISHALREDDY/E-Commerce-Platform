@@ -22,7 +22,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
     if (req.files && req.files.length > 0) {
         req.files.forEach((file) => {
-            imagePaths.push(`/uploads/${file.filename}`);
+            imagePaths.push(file.path);
         });
     }
 
