@@ -5,16 +5,19 @@ const connectDB = require("./config/db");
 
 const PORT = process.env.PORT || 5000;
 
-const startServer = async () => {
-    try {
-        await connectDB();
+// Trust Render's reverse proxy
+app.set("trust proxy", 1);
 
-        app.listen(PORT, () => {
-            console.log(`🚀 Server is running on Port ${PORT}`);
-        });
-    } catch (error) {
-        console.error(error);
-    }
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server is running on Port ${PORT}`);
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 startServer();
