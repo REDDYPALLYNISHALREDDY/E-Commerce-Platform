@@ -7,12 +7,15 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (userData) => {
   const response = await API.post("/auth/login", userData);
+
+  localStorage.setItem("token", response.data.token);
+
   return response.data;
 };
 
 export const logoutUser = async () => {
-  const response = await API.post("/auth/logout");
-  return response.data;
+  localStorage.removeItem("token");
+  return { success: true };
 };
 
 export const getCurrentUser = async () => {
